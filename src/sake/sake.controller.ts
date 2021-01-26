@@ -33,7 +33,8 @@ export class SakeController {
 
   @Post()
   create(@Body() createSakeDto: CreateSakeDto) {
-    return this.sakeService.create(createSakeDto);
+    this.sakeService.create(createSakeDto);
+    return createSakeDto;
   }
 
   @Patch(':id')
