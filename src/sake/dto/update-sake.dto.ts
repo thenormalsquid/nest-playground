@@ -1,10 +1,5 @@
-import { Category } from '../entities/sake.entity';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateSakeDto } from './create-sake.dto';
 
-export class UpdateSakeDto {
-  readonly name?: string;
-  readonly category?: Category;
-  readonly company?: string;
-  readonly alcohol?: string;
-  readonly region?: string;
-  readonly flavors?: string[];
+export class UpdateSakeDto extends PartialType(CreateSakeDto) {
 }

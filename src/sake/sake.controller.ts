@@ -32,7 +32,6 @@ export class SakeController {
   }
 
   @Post()
-  @HttpCode(HttpStatus.GONE)
   create(@Body() createSakeDto: CreateSakeDto) {
     return this.sakeService.create(createSakeDto);
   }
