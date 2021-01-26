@@ -20,28 +20,28 @@ export class SakeController {
 
   @Get()
   findAll(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
-    return `This action returns all sakes. Limit: ${limit}, offset: ${offset}`;
+    // const { limit, offset } = paginationQuery;
+    return this.sakeService.findall();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This action returns ${id} for sake.`;
+    return this.sakeService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.GONE)
   create(@Body() body) {
-    return body;
+    return this.sakeService.create(body);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    return `This action updates ${id} for sake`;
+    return this.sakeService.update(id, body);
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return `This action removes ${id} sake`;
+    return this.sakeService.delete(id);
   }
 }

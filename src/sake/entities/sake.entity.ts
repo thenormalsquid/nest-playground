@@ -7,5 +7,5 @@ export class Sake {
   company: string;
   alcohol: string;
   region: string;
-  flavors: string[];
+  flavors?: string[];
 }
