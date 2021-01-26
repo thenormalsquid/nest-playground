@@ -1,4 +1,4 @@
-type Category = 'daiginjo' | 'ginjo' | 'nigori' | 'junmai' | 'honjozo';
+export type Category = 'daiginjo' | 'ginjo' | 'nigori' | 'junmai' | 'honjozo';
 
 export class Sake {
   id: number;

@@ -10,6 +10,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { CreateSakeDto } from './dto/create-sake.dto';
+import { UpdateSakeDto } from './dto/update-sake.dto';
 import { SakeService } from './sake.service';
 
 @Controller('sakes')
@@ -31,13 +33,13 @@ export class SakeController {
 
   @Post()
   @HttpCode(HttpStatus.GONE)
-  create(@Body() body) {
-    return this.sakeService.create(body);
+  create(@Body() createSakeDto: CreateSakeDto) {
+    return this.sakeService.create(createSakeDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    return this.sakeService.update(id, body);
+  update(@Param('id') id: string, @Body() updateSakeDto: UpdateSakeDto) {
+    return this.sakeService.update(id, updateSakeDto);
   }
 
   @Delete(':id')
