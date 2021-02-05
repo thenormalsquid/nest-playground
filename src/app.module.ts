@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SakeModule } from './sake/sake.module';
 
+const isDev = process.env.NODE_ENV === 'development';
 @Module({
   imports: [SakeModule, TypeOrmModule.forRoot({
     type: 'postgres',
@@ -14,7 +15,7 @@ import { SakeModule } from './sake/sake.module';
     password: 'pass123',
     database: 'postgres',
     autoLoadEntities: true,
-    synchronize: true
+    synchronize: isDev
   })],
   controllers: [AppController],
   providers: [AppService],
