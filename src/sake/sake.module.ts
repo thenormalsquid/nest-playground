@@ -4,5 +4,9 @@ import { SakeController } from './sake.controller';
 import { SakeService } from './sake.service';
 import { Sake } from './entities/sake.entity';
 
-@Module({ imports: [TypeOrmModule.forFeature([Sake])], controllers: [SakeController], providers: [SakeService] })
+@Module({
+  imports: [TypeOrmModule.forFeature([Sake])],
+  controllers: [SakeController],
+  providers: [SakeService],
+})
 export class SakeModule {}
