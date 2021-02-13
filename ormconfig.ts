@@ -24,7 +24,7 @@ const connectionOptions: TypeOrmModuleOptions = {
   synchronize: isDev,
   dropSchema: false,
   migrations: [
-    join(__dirname, 'migrations/*{.ts,.js}')
+    join(__dirname, 'src/migrations/*{.ts,.js}')
   ],
   cli: {
     migrationsDir: 'src/migrations'
