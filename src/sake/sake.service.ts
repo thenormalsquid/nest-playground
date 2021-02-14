@@ -139,5 +139,6 @@ export class SakeService {
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
+    }
   }
 }
