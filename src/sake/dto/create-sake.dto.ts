@@ -1,5 +1,8 @@
 import { IsString } from 'class-validator';
+
 import { Category } from '../entities/sake.entity';
+import { Flavor } from '../entities/flavor.entity';
+import { Company } from '../entities/company.entity';
 
 export class CreateSakeDto {
   @IsString()

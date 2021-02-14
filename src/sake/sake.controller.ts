@@ -10,6 +10,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CreateSakeDto } from './dto/create-sake.dto';
 import { UpdateSakeDto } from './dto/update-sake.dto';
 import { SakeService } from './sake.service';
@@ -21,9 +22,8 @@ export class SakeController {
   }
 
   @Get()
-  findAll(@Query() paginationQuery) {
-    // const { limit, offset } = paginationQuery;
-    return this.sakeService.findall();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.sakeService.findall(paginationQuery);
   }
 
   @Get(':id')

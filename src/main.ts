@@ -9,6 +9,9 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true, // transforms payload to an instance of the dto
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
   await app.listen(process.env.PORT || 4200);
