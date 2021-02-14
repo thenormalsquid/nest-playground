@@ -18,6 +18,10 @@ export class SakeService {
 
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+
+    @InjectRepository(Event)
+    private readonly eventRepository: Repository<Event>,
+
     private readonly connection: Connection,
   ) {}
   // private sakes: Sake[] = [
