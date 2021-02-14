@@ -12,7 +12,7 @@ export class CreateSakeDto {
   readonly category: Category;
 
   @IsString()
-  readonly company: Company;
+  readonly company: string;
 
   @IsString()
   readonly alcohol: string;
@@ -21,5 +21,5 @@ export class CreateSakeDto {
   readonly region: string;
 
   @IsString({ each: true })
-  readonly flavors?: Flavor[];
+  readonly flavors?: string[];
 }

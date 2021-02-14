@@ -21,7 +21,7 @@ const connectionOptions: TypeOrmModuleOptions = {
   database: 'postgres',
   autoLoadEntities: true,
   entities: ['src/**/*.entity*{.js}'], // this needs to be js to point to the compiled entities
-  synchronize: true,
+  synchronize: isDev,
   dropSchema: false,
   migrations: [
     join(__dirname, 'src/migrations/*{.js}') // this needs to be js to point to the compiled migrations

@@ -1,13 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Sake } from './entities/sake.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSakeDto } from './dto/create-sake.dto';
+import { Flavor } from './entities/flavor.entity';
+import { Company } from './entities/company.entity';
 @Injectable()
 export class SakeService {
   constructor(
     @InjectRepository(Sake)
     private readonly sakeRepository: Repository<Sake>,
+
+    @InjectRepository(Flavor)
+    private readonly flavorRepository: Repository<Flavor>,
+
+    @InjectRepository(Company)
+    private readonly companyRepository: Repository<Company>,
   ) {}
   // private sakes: Sake[] = [
   //   {
@@ -40,24 +48,40 @@ export class SakeService {
   // ];
 
   findall() {
-    return this.sakeRepository.find();
+    return this.sakeRepository.find({
+      relations: ['flavors', 'company'],
+    });
   }
 
   async findOne(id: string) {
-    const sake = await this.sakeRepository.findOne(id);
+    const sake = await this.sakeRepository.findOne(id, {
+      relations: ['flavors', 'company'],
+    });
     if (!sake) {
       throw new NotFoundException(`Sake ${id} not found`);
     }
     return sake;
   }
 
-  create(createSakeDto: CreateSakeDto) {
-    const sake = this.sakeRepository.create(createSakeDto);
+  async create(createSakeDto: CreateSakeDto) {
+    const flavors = await Promise.all(createSakeDto.flavors.map(name => this.preloadFlavorByName(name)));
+    const company = await this.preloadCompanyByName(createSakeDto.company);
+    const sake = this.sakeRepository.create({ ...createSakeDto, flavors, company });
     return this.sakeRepository.save(sake);
   }
 
   async update(id: string, updateSakeDto: any) {
-    const sake = await this.sakeRepository.preload({ id: +id, ...updateSakeDto });
+    const flavors = updateSakeDto.flavors && (await Promise.all(
+      updateSakeDto.flavors.map(name => this.preloadFlavorByName(name))
+    ));
+    const company = updateSakeDto.company && await this.preloadCompanyByName(updateSakeDto.company);
+
+    const sake = await this.sakeRepository.preload({
+      id: +id,
+      ...updateSakeDto,
+      flavors,
+      company
+    });
     if (!sake) {
       throw new NotFoundException(`Sake ${id} not found.`);
     }
@@ -67,5 +91,22 @@ export class SakeService {
   async delete(id: string) {
     const sake = await this.findOne(id);
     return this.sakeRepository.remove(sake);
+  }
+
+  async preloadFlavorByName(name: string): Promise<Flavor> {
+    const existingFlavor = await this.flavorRepository.findOne({ name });
+    // find or create flavor
+    if(existingFlavor) {
+      return existingFlavor;
+    }
+    return this.flavorRepository.create({ name });
+  }
+
+  async preloadCompanyByName(name: string): Promise<Company> {
+    const existingCompany = await this.companyRepository.findOne({ name });
+    if (existingCompany) {
+      return existingCompany;
+    }
+    return this.companyRepository.create({ name });
   }
 }

@@ -15,7 +15,7 @@ export class Sake {
   @Column()
   category: Category;
 
-  @ManyToOne(() => Company, (company) => company.sake)
+  @ManyToOne(() => Company, (company) => company.sake, { cascade: true })
   company: Company;
 
   @Column()
@@ -25,6 +25,6 @@ export class Sake {
   region: string;
 
   @JoinTable()
-  @ManyToMany(type => Flavor, flavor => flavor.sake)
+  @ManyToMany(type => Flavor, flavor => flavor.sake, { cascade: true })
   flavors?: Flavor[];
 }
