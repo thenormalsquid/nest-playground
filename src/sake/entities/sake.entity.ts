@@ -24,6 +24,9 @@ export class Sake {
   @Column()
   region: string;
 
+  @Column({ default: 0})
+  recommendations: number;
+
   @JoinTable()
   @ManyToMany(type => Flavor, flavor => flavor.sake, { cascade: true })
   flavors?: Flavor[];

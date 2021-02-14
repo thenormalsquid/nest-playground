@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Sake } from './entities/sake.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Connection, In, Repository } from 'typeorm';
 import { CreateSakeDto } from './dto/create-sake.dto';
 import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { Event } from 'src/events/entities/event.entity';
 @Injectable()
 export class SakeService {
   constructor(
@@ -17,6 +18,7 @@ export class SakeService {
 
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+    private readonly connection: Connection,
   ) {}
   // private sakes: Sake[] = [
   //   {
@@ -113,5 +115,29 @@ export class SakeService {
       return existingCompany;
     }
     return this.companyRepository.create({ name });
+  }
+
+  async recommendSake(sake: Sake) {
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect(); // establish conn
+    await queryRunner.startTransaction();
+
+    try {
+      sake.recommendations++;
+
+      const recommendEvent = new Event();
+      recommendEvent.name = 'recommend_sake';
+      recommendEvent.type = 'sake';
+      recommendEvent.payload = { sakeId: sake.id };
+
+      await queryRunner.manager.save(sake);
+      await queryRunner.manager.save(recommendEvent);
+
+      await queryRunner.commitTransaction();
+    } catch(err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
   }
 }
