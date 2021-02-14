@@ -5,6 +5,7 @@ import { In, Repository } from 'typeorm';
 import { CreateSakeDto } from './dto/create-sake.dto';
 import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 @Injectable()
 export class SakeService {
   constructor(
@@ -47,9 +48,13 @@ export class SakeService {
   //   },
   // ];
 
-  findall() {
+  findall(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+
     return this.sakeRepository.find({
       relations: ['flavors', 'company'],
+      skip: offset,
+      take: limit,
     });
   }
 
