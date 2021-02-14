@@ -16,7 +16,7 @@ export class Sake {
   category: Category;
 
   @ManyToOne(() => Company, (company) => company.sake)
-  company: string;
+  company: Company;
 
   @Column()
   alcohol: string;

@@ -20,11 +20,11 @@ const connectionOptions: TypeOrmModuleOptions = {
   password: 'pass123',
   database: 'postgres',
   autoLoadEntities: true,
-  entities: ['src/**/*.entity.ts'],
-  synchronize: isDev,
+  entities: ['src/**/*.entity*{.js}'], // this needs to be js to point to the compiled entities
+  synchronize: true,
   dropSchema: false,
   migrations: [
-    join(__dirname, 'src/migrations/*{.ts,.js}')
+    join(__dirname, 'src/migrations/*{.js}') // this needs to be js to point to the compiled migrations
   ],
   cli: {
     migrationsDir: 'src/migrations'
