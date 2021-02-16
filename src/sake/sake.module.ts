@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SakeController } from './sake.controller';
 import { SakeService } from './sake.service';
+import { SAKE_BRANDS } from './sake.constants';
 
 import { Sake } from './entities/sake.entity';
 import { Company } from './entities/company.entity';
@@ -12,7 +13,7 @@ export class MockSakeService {}
 @Module({
   imports: [TypeOrmModule.forFeature([Sake, Flavor, Company, Event])],
   controllers: [SakeController],
-  providers: [{ provide: SakeService, useValue: MockSakeService }],
+  providers: [SakeService, { provide: SAKE_BRANDS, useValue: ['foo', 'bar'] }],
   exports: [SakeService]
 })
 export class SakeModule {}

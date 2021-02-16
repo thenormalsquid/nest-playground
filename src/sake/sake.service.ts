@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Sake } from './entities/sake.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, In, Repository } from 'typeorm';
 import { CreateSakeDto } from './dto/create-sake.dto';
+import { SAKE_BRANDS } from './sake.constants';
 import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -23,7 +24,10 @@ export class SakeService {
     private readonly eventRepository: Repository<Event>,
 
     private readonly connection: Connection,
-  ) {}
+    @Inject(SAKE_BRANDS) sakeBrands: string[],
+  ) {
+    console.log(sakeBrands);
+  }
   // private sakes: Sake[] = [
   //   {
   //     id: 1,
