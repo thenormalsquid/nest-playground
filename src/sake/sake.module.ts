@@ -10,10 +10,23 @@ import { Flavor } from './entities/flavor.entity';
 import { Event } from 'src/events/entities/event.entity';
 
 export class MockSakeService {}
+class ConfigService {}
+class DevelopmentConfigService {}
+class ProductionConfigService {}
 @Module({
   imports: [TypeOrmModule.forFeature([Sake, Flavor, Company, Event])],
   controllers: [SakeController],
-  providers: [SakeService, { provide: SAKE_BRANDS, useValue: ['foo', 'bar'] }],
-  exports: [SakeService]
+  providers: [
+    SakeService,
+    {
+      provide: ConfigService,
+      useClass:
+        process.env.NODE_ENV === 'development'
+          ? DevelopmentConfigService
+          : ProductionConfigService,
+    },
+    { provide: SAKE_BRANDS, useValue: ['foo', 'bar'] },
+  ],
+  exports: [SakeService],
 })
 export class SakeModule {}
