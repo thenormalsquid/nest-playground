@@ -8,9 +8,11 @@ import { Company } from './entities/company.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from 'src/events/entities/event.entity';
 
+export class MockSakeService {}
 @Module({
   imports: [TypeOrmModule.forFeature([Sake, Flavor, Company, Event])],
   controllers: [SakeController],
-  providers: [SakeService],
+  providers: [{ provide: SakeService, useValue: MockSakeService }],
+  exports: [SakeService]
 })
 export class SakeModule {}
