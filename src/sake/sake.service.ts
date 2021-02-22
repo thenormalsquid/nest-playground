@@ -9,7 +9,9 @@ import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity';
 import { REQUEST } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import sakeConfig from './config/sake.config';
+
 
 // Scope DEFAULT - This is assumed when NO Scope is entered like so: @Injectable() */
 // @Injectable({ scope: Scope.DEFAULT })
@@ -63,9 +65,11 @@ export class SakeService {
     private readonly connection: Connection,
 
     private readonly configService: ConfigService,
+
+    @Inject(sakeConfig.KEY)
+    private sakeConfiguration: ConfigType<typeof sakeConfig>, 
   ) {
-    const databaseHost = this.configService.get('database.host', 'localhost');
-    console.log(databaseHost);
+    console.log(sakeConfiguration.foo);
   }
   // private sakes: Sake[] = [
   //   {

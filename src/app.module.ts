@@ -31,28 +31,30 @@ import appConfig from './config/app.config';
 // });
 @Module({
   imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.DATABASE_HOST,
+        port: +process.env.DATABASE_PORT,
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        autoLoadEntities: true,
+        synchronize: true,
+        entities: ['src/**/*.entity.js'], // this needs to be js to point to the compiled entities
+        dropSchema: false,
+        migrations: [
+          join(__dirname, 'src/migrations/*.js') // this needs to be js to point to the compiled migrations
+        ],
+        cli: {
+          migrationsDir: 'src/migrations'
+        }
+        })
+    }),
     ConfigModule.forRoot({
       load: [appConfig]
     }),
     SakeModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadEntities: true,
-      synchronize: true,
-      entities: ['src/**/*.entity.js'], // this needs to be js to point to the compiled entities
-      dropSchema: false,
-      migrations: [
-        join(__dirname, 'src/migrations/*.js') // this needs to be js to point to the compiled migrations
-      ],
-      cli: {
-        migrationsDir: 'src/migrations'
-      }
-    }),
     SakeRatingModule,
     DatabaseModule,
   ],

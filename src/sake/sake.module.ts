@@ -9,6 +9,7 @@ import { Company } from './entities/company.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { ConfigModule } from '@nestjs/config';
+import sakeConfig from './config/sake.config';
 
 export class MockSakeService {}
 // class ConfigService {}
@@ -21,7 +22,7 @@ export class MockSakeService {}
 //   }
 // }
 @Module({
-  imports: [TypeOrmModule.forFeature([Sake, Flavor, Company, Event]), ConfigModule],
+  imports: [TypeOrmModule.forFeature([Sake, Flavor, Company, Event]), ConfigModule.forFeature(sakeConfig)],
   controllers: [SakeController],
   providers: [
     SakeService,
