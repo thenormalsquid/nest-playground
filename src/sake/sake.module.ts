@@ -34,7 +34,9 @@ class SakeBrandsFactory {
     // },
     {
       provide: SAKE_BRANDS,
-      useFactory: (brandsFactory: SakeBrandsFactory) => brandsFactory.create(),
+      useFactory: async (brandsFactory: SakeBrandsFactory): Promise<string[]> =>  {
+       return await Promise.resolve(brandsFactory.create());
+      },
       inject: [SakeBrandsFactory],
     },
   ],

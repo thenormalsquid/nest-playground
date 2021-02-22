@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { Sake } from './entities/sake.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, In, Repository } from 'typeorm';
@@ -8,6 +8,41 @@ import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity';
+
+// Scope DEFAULT - This is assumed when NO Scope is entered like so: @Injectable() */
+// @Injectable({ scope: Scope.DEFAULT })
+// export class CoffeesService {}
+
+// -------------
+
+// /** 
+//  * Scope TRANSIENT 
+  
+//  * Transient providers are NOT shared across consumers. 
+//  * Each consumer that injects a transient provider 
+//  * will receive a new, dedicated instance of that provider. 
+//  */
+// @Injectable({ scope: Scope.TRANSIENT })
+// export class CoffeesService {}
+
+// // Scope TRANSIENT with a Custom Provider
+// {
+//   provide: 'COFFEE_BRANDS',
+//   useFactory: () => ['buddy brew', 'nescafe'],
+//   scope: Scope.TRANSIENT // 👈
+// }
+
+// -------------
+
+// /**
+//  * Scope REQUEST 
+
+//  * Request scope provides a new instance of the provider 
+//  * exclusively for each incoming request. 
+//  */
+// @Injectable({ scope: Scope.REQUEST })
+// export class CoffeesService {}
+
 @Injectable()
 export class SakeService {
   constructor(
