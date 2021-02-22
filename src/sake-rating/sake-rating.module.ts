@@ -9,7 +9,7 @@ import { SakeRatingService } from './sake-rating.service';
     DatabaseModule.register({
       type: 'postgres',
       host: 'localhost',
-      port: 5432,
+      port: 6697,
       password: 'password',
     }),
     SakeModule,

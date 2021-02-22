@@ -3,12 +3,15 @@ import { Sake } from './entities/sake.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, In, Repository } from 'typeorm';
 import { CreateSakeDto } from './dto/create-sake.dto';
-import { SAKE_BRANDS } from './sake.constants';
+// import { SAKE_BRANDS } from './sake.constants';
 import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity';
 import { REQUEST } from '@nestjs/core';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import sakeConfig from './config/sake.config';
+
 
 // Scope DEFAULT - This is assumed when NO Scope is entered like so: @Injectable() */
 // @Injectable({ scope: Scope.DEFAULT })
@@ -44,7 +47,7 @@ import { REQUEST } from '@nestjs/core';
 // @Injectable({ scope: Scope.REQUEST })
 // export class CoffeesService {}
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class SakeService {
   constructor(
     @InjectRepository(Sake)
@@ -60,9 +63,13 @@ export class SakeService {
     private readonly eventRepository: Repository<Event>,
 
     private readonly connection: Connection,
-    @Inject(SAKE_BRANDS) sakeBrands: string[],
+
+    private readonly configService: ConfigService,
+
+    @Inject(sakeConfig.KEY)
+    private sakeConfiguration: ConfigType<typeof sakeConfig>, 
   ) {
-    console.log('Sake service instantiated');
+    console.log(sakeConfiguration.foo);
   }
   // private sakes: Sake[] = [
   //   {
