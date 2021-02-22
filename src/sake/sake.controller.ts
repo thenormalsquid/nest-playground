@@ -9,7 +9,10 @@ import {
   Patch,
   Post,
   Query,
+  Inject,
+  Request,
 } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CreateSakeDto } from './dto/create-sake.dto';
 import { UpdateSakeDto } from './dto/update-sake.dto';
@@ -17,8 +20,11 @@ import { SakeService } from './sake.service';
 
 @Controller('sakes')
 export class SakeController {
-  constructor(private readonly sakeService: SakeService) {
-
+  constructor(
+    private readonly sakeService: SakeService,
+    @Inject(REQUEST) private request: Request,
+  ) {
+    console.log('SakeController instantiated');
   }
 
   @Get()
