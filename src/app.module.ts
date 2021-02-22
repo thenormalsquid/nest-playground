@@ -9,6 +9,7 @@ import { SakeModule } from './sake/sake.module';
 import { SakeRatingModule } from './sake-rating/sake-rating.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import appConfig from './config/app.config';
 
 /**
  * To specify another path for this file, 
@@ -31,10 +32,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        DATABASE_HOST: Joi.required(),
-        DATABASE_PORT: Joi.number().default(6697),
-      })
+      load: [appConfig]
     }),
     SakeModule,
     TypeOrmModule.forRoot({
