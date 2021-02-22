@@ -8,6 +8,7 @@ import { Flavor } from './entities/flavor.entity';
 import { Company } from './entities/company.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity';
+import { REQUEST } from '@nestjs/core';
 
 // Scope DEFAULT - This is assumed when NO Scope is entered like so: @Injectable() */
 // @Injectable({ scope: Scope.DEFAULT })
@@ -43,7 +44,7 @@ import { Event } from 'src/events/entities/event.entity';
 // @Injectable({ scope: Scope.REQUEST })
 // export class CoffeesService {}
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class SakeService {
   constructor(
     @InjectRepository(Sake)
@@ -61,7 +62,7 @@ export class SakeService {
     private readonly connection: Connection,
     @Inject(SAKE_BRANDS) sakeBrands: string[],
   ) {
-    console.log(sakeBrands);
+    console.log('Sake service instantiated');
   }
   // private sakes: Sake[] = [
   //   {
